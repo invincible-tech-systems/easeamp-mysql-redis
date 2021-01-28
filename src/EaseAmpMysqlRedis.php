@@ -15,7 +15,7 @@ use InvincibleTechSystems\EaseAmpRedis\EaseAmpRedis;
 *
 * Company: Invincible Tech Systems
 *
-* Version: 0.0.1
+* Version: 1.0.0.
 *
 * Description: A very simple and safe PHP library that enables easy redis cache warmup from MySQL/MariaDB Database. This uses custom redis warmup class methods based on , 
 * on top of EaseAmpMysql package, that wraps up the AmPHP related MySQL and Redis Packages to interact with MySQL/MariaDB database and Redis in-memory cache in an asynchronous & 

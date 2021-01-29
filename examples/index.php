@@ -10,9 +10,9 @@ use \InvincibleTechSystems\EaseAmpMysqlRedis\EaseAmpMysqlRedis;
 
 
 $dbHost = "127.0.0.1";
-$dbUsername = "chatimmus_dbuser2";
-$dbPassword = "khvyi68rtfhf65etdudfy8i";
-$dbName = "chatimmus_db2";
+$dbUsername = "db_username";
+$dbPassword = "db_password";
+$dbName = "db_name";
 
 $redisHost = 'tcp://localhost:6379';
 $redisKeyNamespacePrefix = "MyFirstApp";

@@ -1,6 +1,9 @@
 <?php 
 
 require '../vendor/autoload.php';
+/* ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL); */
 
 //require 'EaseAmpMysql.php';
 
@@ -8,11 +11,10 @@ use \InvincibleTechSystems\EaseAmpMysql\EaseAmpMysql;
 use \InvincibleTechSystems\EaseAmpRedis\EaseAmpRedis;
 use \InvincibleTechSystems\EaseAmpMysqlRedis\EaseAmpMysqlRedis;
 
-
 $dbHost = "127.0.0.1";
 $dbUsername = "db_username";
 $dbPassword = "db_password";
-$dbName = "db_name";
+$dbName = "db_name"; 
 
 $redisHost = 'tcp://localhost:6379';
 $redisKeyNamespacePrefix = "MyFirstApp";
@@ -41,8 +43,9 @@ $values_array = array(':sm_firstname' => 'Raghu',':sm_lastname' => 'D');
 $queryResult = $mysqlRedisConn->insertSingleRecordMysqlRedis($query, $values_array, "insertWithIntegerAsPrimaryKey", $redisKeyNamespacePrefix, "site_members13322aaaassmmmmm", $redisKeyExpiryTimeInSeconds);
 
 
+
 $values_array1 = array(':sm_firstname' => 'Raghu',':sm_lastname' => 'D');
-$values_array2 = array(':sm_firstname' => 'krishna',':sm_lastname' => 'N');
+$values_array2 = array(':sm_firstname' => 'Krishna',':sm_lastname' => 'N');
 $values_array3 = array(':sm_firstname' => 'Veera',':sm_lastname' => '');
 
 $total_values_array = array($values_array1, $values_array2, $values_array3);
@@ -62,7 +65,7 @@ echo "==========================================================================
 $query = "UPDATE `site_members` SET `sm_firstname`=:sm_firstname, `sm_lastname`=:sm_lastname WHERE `sm_memb_id`=:sm_memb_id";
 
 $values_array = array();
-$values_array = array(':sm_firstname' => 'RVGV',':sm_lastname' => '',':sm_memb_id' => 2);
+$values_array = array(':sm_firstname' => 'RVGV',':sm_lastname' => 'Den',':sm_memb_id' => 3);
 
 //$preparedQuery = $mysqlRedisConn->prepareQuery($query);
 //$queryResult = $mysqlRedisConn->runPreparedQuery($preparedQuery, $values_array, "update");
@@ -73,9 +76,9 @@ $values_array = array(':sm_firstname' => 'RVGV',':sm_lastname' => '',':sm_memb_i
 //$queryResult = $mysqlRedisConn->updateSingleRecordMysqlRedis($query, $values_array, "update", $redisKeyNamespacePrefix, "site_members13322", $redisKeyExpiryTimeInSeconds);
 
 
-$values_array1 = array(':sm_firstname' => 'Raghu1',':sm_lastname' => '',':sm_memb_id' => 2);
-$values_array2 = array(':sm_firstname' => 'krishna1',':sm_lastname' => '',':sm_memb_id' => 3);
-$values_array3 = array(':sm_firstname' => 'Veera1',':sm_lastname' => 'p',':sm_memb_id' => 6);
+$values_array1 = array(':sm_firstname' => 'Raghu12',':sm_lastname' => '',':sm_memb_id' => 2);
+$values_array2 = array(':sm_firstname' => 'Krishna12',':sm_lastname' => '',':sm_memb_id' => 3);
+$values_array3 = array(':sm_firstname' => 'Veera12',':sm_lastname' => 'p',':sm_memb_id' => 6);
 
 $total_values_array = array($values_array1, $values_array2, $values_array3);
 
@@ -99,9 +102,9 @@ $values_array = array();
 $values_array = array(':sm_memb_id' => 1);
 
 
-$received_key_value = $mysqlRedisConn->getSingleRecordRedis($redisKeyNamespacePrefix, "site_members13322aaaassmmmmm", $query, $values_array, "selectSingle", $redisKeyExpiryTimeInSeconds);
-echo "received_key_value: ";
-var_dump($received_key_value);
+//$received_key_value = $mysqlRedisConn->getSingleRecordRedis($redisKeyNamespacePrefix, "site_members13322aaaassmmmmm", $query, $values_array, "selectSingle", $redisKeyExpiryTimeInSeconds);
+//echo "received_key_value: ";
+//var_dump($received_key_value);
 
 
 
@@ -110,7 +113,7 @@ echo "==========================================================================
 //DELETE Single Record from Redis:
 
 //$key_deletion_result = $mysqlRedisConn->deleteSingleRecordRedis($redisKeyNamespacePrefix, "site_members13322aaaassmmmmm");
-//echo "key_deletion_result: ";
+//echo "<br>\n key_deletion_result: ";
 //var_dump($key_deletion_result);
 
 
@@ -123,11 +126,11 @@ echo "==========================================================================
 $query = "DELETE FROM `site_members` WHERE `sm_memb_id`=:sm_memb_id";
 
 $values_array = array();
-$values_array = array(':sm_memb_id' => 11);
+$values_array = array(':sm_memb_id' => 12);
 
 
 //single record delete query from mysql and from redis
-$queryResult = $mysqlRedisConn->deleteSingleRecordMysqlRedis($redisKeyNamespacePrefix, "site_members13322aaaassmmmmm", $query, $values_array, "delete");
+//$queryResult = $mysqlRedisConn->deleteSingleRecordMysqlRedis($redisKeyNamespacePrefix, "site_members13322aaaassmmmmm", $query, $values_array, "delete");
 
 
 

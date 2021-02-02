@@ -6,7 +6,8 @@ namespace InvincibleTechSystems\EaseAmpMysqlRedis;
 
 use \Amp\Mysql;
 use \InvincibleTechSystems\EaseAmpMysql\EaseAmpMysql;
-use InvincibleTechSystems\EaseAmpRedis\EaseAmpRedis;
+use \InvincibleTechSystems\EaseAmpRedis\EaseAmpRedis;
+use \InvincibleTechSystems\EaseAmpMysqlRedis\Exceptions\EaseAmpMysqlRedisException;
 
 /*
 * Name: EaseAmpMysqlRedis
@@ -15,7 +16,7 @@ use InvincibleTechSystems\EaseAmpRedis\EaseAmpRedis;
 *
 * Company: Invincible Tech Systems
 *
-* Version: 1.0.0.
+* Version: 1.0.3
 *
 * Description: A very simple and safe PHP library that enables easy redis cache warmup from MySQL/MariaDB Database. This uses custom redis warmup class methods based on , 
 * on top of EaseAmpMysql package, that wraps up the AmPHP related MySQL and Redis Packages to interact with MySQL/MariaDB database and Redis in-memory cache in an asynchronous & 
@@ -63,22 +64,29 @@ class EaseAmpMysqlRedis {
 					$redis_expire_def_result = $this->redisConn->expire($redisKeyNamespacePrefix, $redisKeyNameSuffix, $expiryInSeconds);
 					
 					$result["redis_expire_def_result"] = $redis_expire_def_result;
-
+					
+				} else {
+					
+					$result["db_query_response"] = $this->dbQueryResponse;
+							
+					$result["redis_mapset_result"] = "operation-not-performed-now";
+					
+					
+					$result["redis_expire_def_result"] = "operation-not-performed-now";
+					
 				}
 				
 				return $result;
 				
 			} else {
 				
-				throw new \Exception("In-correct CRUD Operation Type Keyword inputed! \n");
+				throw new EaseAmpMysqlRedisException("In-correct CRUD Operation Type Keyword inputed! \n");
 				
 			}
 			
+		} catch (EaseAmpMysqlRedisException $e) {
 			
-			
-		} catch (\Exception $e) {
-			
-			throw new \Exception($e->getMessage(), (int)$e->getCode());
+			echo "\n EaseAmpMysqlRedisException - ", $e->getMessage(), (int)$e->getCode();
 			
 		}
 		
@@ -118,33 +126,45 @@ class EaseAmpMysqlRedis {
 							$redis_expire_def_result = $this->redisConn->expire($multiRecordRedisConfigValuesArray[$i]["namespace_prefix"], $multiRecordRedisConfigValuesArray[$i]["key_name"], $multiRecordRedisConfigValuesArray[$i]["expiry_time_def_in_Seconds"]);
 							
 							$row_result["redis_expire_def_result"] = $redis_expire_def_result;
+							
+							$result[] = $row_result;
 
+						} else {
+							
+							$row_result["db_query_response"] = $this->dbQueryResponse;
+							
+							$row_result["redis_mapset_result"] = "operation-not-performed-now";
+							
+							
+							$row_result["redis_expire_def_result"] = "operation-not-performed-now";
+							
+							$result[] = $row_result;
+
+							//throw new EaseAmpMysqlRedisException("Error with Database Insert Query! \n");
+							
 						}
-						
-						
-						$result[] = $row_result;
-					
 						
 					} else {
 						
-						throw new \Exception("In-correct CRUD Operation Type Keyword inputed! \n");
+						throw new EaseAmpMysqlRedisException("In-correct CRUD Operation Type Keyword inputed! \n");
 						
 					}
 					
 					$i++;
 				}
 				
+				return $result;
+				
 			} else {
 				
-				throw new \Exception("Count of DB Query Values Array & Redis Config values Array are not matching, please check! \n");
+				throw new EaseAmpMysqlRedisException("Count of DB Query Values Array & Redis Config values Array are not matching, please check! \n");
 				
 			}
 			
-			return $result;
 			
-		} catch (\Exception $e) {
+		} catch (EaseAmpMysqlRedisException $e) {
 			
-			throw new \Exception($e->getMessage(), (int)$e->getCode());
+			echo "\n EaseAmpMysqlRedisException - ", $e->getMessage(), (int)$e->getCode();
 			
 		}
 		
@@ -188,13 +208,13 @@ class EaseAmpMysqlRedis {
 				
 			} else {
 				
-				throw new \Exception("In-correct CRUD Operation Type Keyword inputed! \n");
+				throw new EaseAmpMysqlRedisException("In-correct CRUD Operation Type Keyword inputed! \n");
 				
 			}
 			
-		} catch (\Exception $e) {
+		} catch (EaseAmpMysqlRedisException $e) {
 			
-			throw new \Exception($e->getMessage(), (int)$e->getCode());
+			echo "\n EaseAmpMysqlRedisException - ", $e->getMessage(), (int)$e->getCode();
 			
 		}
 		
@@ -233,6 +253,8 @@ class EaseAmpMysqlRedis {
 							$redis_expire_def_result = $this->redisConn->expire($multiRecordRedisConfigValuesArray[$i]["namespace_prefix"], $multiRecordRedisConfigValuesArray[$i]["key_name"], $multiRecordRedisConfigValuesArray[$i]["expiry_time_def_in_Seconds"]);
 							
 							$row_result["redis_expire_def_result"] = $redis_expire_def_result;
+							
+							$result[] = $row_result;
 
 						} else {
 							//Note: This error happens when the record doesnot exist or when data submitted is same as data in the database record
@@ -242,30 +264,34 @@ class EaseAmpMysqlRedis {
 							
 							$row_result["redis_expire_def_result"] = "operation-not-performed-now";
 							
+							$result[] = $row_result;
+							
+							//throw new EaseAmpMysqlRedisException("Error with Database Update Query! \n");
+							
 						}
 						
-						$result[] = $row_result;
+						
 					
 					} else {
 						
-						throw new \Exception("In-correct CRUD Operation Type Keyword inputed! \n");
+						throw new EaseAmpMysqlRedisException("In-correct CRUD Operation Type Keyword inputed! \n");
 						
 					}
 					
 					$i++;
 				}
 				
+				return $result;
+				
 			} else {
 				
-				throw new \Exception("Count of DB Query Values Array & Redis Config values Array are not matching, please check! \n");
+				throw new EaseAmpMysqlRedisException("Count of DB Query Values Array & Redis Config values Array are not matching, please check! \n");
 				
 			}
 			
-			return $result;
+		} catch (EaseAmpMysqlRedisException $e) {
 			
-		} catch (\Exception $e) {
-			
-			throw new \Exception($e->getMessage(), (int)$e->getCode());
+			echo "\n EaseAmpMysqlRedisException - ", $e->getMessage(), (int)$e->getCode();
 			
 		}
 		
@@ -277,11 +303,11 @@ class EaseAmpMysqlRedis {
 		try {
 			
 			if ($this->redisConn->exists($redisKeyNamespacePrefix,$redisKeyNameSuffix) === true) {
-				echo "\n key value from REDIS CACHE\n";
+				//echo "\n key value from REDIS CACHE\n";
 				$received_record_value = $this->redisConn->get($redisKeyNamespacePrefix, $redisKeyNameSuffix);
 				
 			} else {
-				echo "\n key value from REDIS CACHE, after populated from mysql\n";
+				//echo "\n key value from REDIS CACHE, after populated from mysql\n";
 				if ($crudOperationType == "selectSingle") {
 					
 					$result = [];
@@ -306,17 +332,21 @@ class EaseAmpMysqlRedis {
 							
 							$received_record_value = $this->redisConn->get($redisKeyNamespacePrefix, $redisKeyNameSuffix);
 							
+						} else {
+							
+							throw new EaseAmpMysqlRedisException("Error handling DB response/Mapping data in Redis! \n");
+							
 						}
 
 					} else {
 						
-						throw new \Exception("Error Receiving record data from database, data doesn't exist! \n");
+						throw new EaseAmpMysqlRedisException("No data received from the database! \n");
 						
 					}
 					
 				} else {
 					
-					throw new \Exception("In-correct CRUD Operation Type Keyword inputed! \n");
+					throw new EaseAmpMysqlRedisException("In-correct CRUD Operation Type Keyword inputed! \n");
 					
 				}
 				
@@ -324,9 +354,9 @@ class EaseAmpMysqlRedis {
 			
 			return $received_record_value;
 			
-		} catch (\Exception $e) {
+		} catch (EaseAmpMysqlRedisException $e) {
 			
-			throw new \Exception($e->getMessage(), (int)$e->getCode());
+			echo "\n EaseAmpMysqlRedisException - ", $e->getMessage(), (int)$e->getCode();
 			
 		}
 		
@@ -336,37 +366,45 @@ class EaseAmpMysqlRedis {
 		
 		try {
 			
-			if (($this->redisConn->exists($redisKeyNamespacePrefix,$redisKeyNameSuffix) === true) && ($crudOperationType == "delete")) {
+			if ($this->redisConn->exists($redisKeyNamespacePrefix,$redisKeyNameSuffix) === true) {
 				
-				$result = [];
+				if ($crudOperationType == "delete") {
 					
-				$this->dbQueryResponse = $this->dbConn->executeQuery($query, $valueArray, $crudOperationType);
-				
-				if ($this->dbQueryResponse === true) {
+					$result = [];
 					
-					$result["db_query_response"] = $this->dbQueryResponse;
+					$this->dbQueryResponse = $this->dbConn->executeQuery($query, $valueArray, $crudOperationType);
 					
-					//Since method to execute Single Delete doesnot exist, EXPIRE method is being used temporarily, i.e. to expire the key in 1 second.
-			
-					$result["redis_delete_operation_result"] = $this->redisConn->expire($redisKeyNamespacePrefix, $redisKeyNameSuffix, 1);
+					if ($this->dbQueryResponse === true) {
 						
-					return $result;
+						$result["db_query_response"] = $this->dbQueryResponse;
+						
+						//Since method to execute Single Delete doesnot exist, EXPIRE method is being used temporarily, i.e. to expire the key in 1 second.
+				
+						$result["redis_delete_operation_result"] = $this->redisConn->expire($redisKeyNamespacePrefix, $redisKeyNameSuffix, 1);
+							
+						return $result;
+						
+					} else {
+						
+						throw new EaseAmpMysqlRedisException("Error with Delete Query/Record not Found! \n");
+						
+					}
 					
 				} else {
 					
-					throw new \Exception("Error with Delete Query/Record not Found! ");
+					throw new EaseAmpMysqlRedisException("In-correct CRUD Operation Type Keyword inputed! \n");
 					
 				}
 				
 			} else {
 				
-				throw new \Exception("Delete operation cannot be performed. Key Submitted does not exist! ");
+				throw new EaseAmpMysqlRedisException("Delete operation cannot be performed as Key Submitted, does not exist! \n");
 				
 			}
 			
-		} catch (\Exception $e) {
+		} catch (EaseAmpMysqlRedisException $e) {
 			
-			throw new \Exception($e->getMessage(), (int)$e->getCode());
+			echo "\n EaseAmpMysqlRedisException - ", $e->getMessage(), (int)$e->getCode();
 			
 		}
 		
@@ -386,13 +424,13 @@ class EaseAmpMysqlRedis {
 				
 			} else {
 				
-				throw new \Exception("Delete operation cannot be performed. Key Submitted doesnot exist! ");
+				throw new EaseAmpMysqlRedisException("Delete operation cannot be performed. Key Submitted doesnot exist! ");
 				
 			}
 			
-		} catch (\Exception $e) {
+		} catch (EaseAmpMysqlRedisException $e) {
 			
-			throw new \Exception($e->getMessage(), (int)$e->getCode());
+			echo "\n EaseAmpMysqlRedisException - ", $e->getMessage(), (int)$e->getCode();
 			
 		}
 		
@@ -415,9 +453,9 @@ class EaseAmpMysqlRedis {
 			
 			return $collected_result;
 			
-		} catch (\Exception $e) {
+		} catch (EaseAmpMysqlRedisException $e) {
 			
-			throw new \Exception($e->getMessage(), (int)$e->getCode());
+			echo "\n EaseAmpMysqlRedisException - ", $e->getMessage(), (int)$e->getCode();
 			
 		}
 		
@@ -440,9 +478,9 @@ class EaseAmpMysqlRedis {
 			
 			return $collected_result;
 			
-		} catch (\Exception $e) {
+		} catch (EaseAmpMysqlRedisException $e) {
 			
-			throw new \Exception($e->getMessage(), (int)$e->getCode());
+			echo "\n EaseAmpMysqlRedisException - ", $e->getMessage(), (int)$e->getCode();
 			
 		}
 		

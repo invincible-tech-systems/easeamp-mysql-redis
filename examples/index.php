@@ -1,15 +1,16 @@
 <?php 
 
 require '../vendor/autoload.php';
-/* ini_set('display_errors', 1);
+ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL); */
+error_reporting(E_ALL);
 
 //require 'EaseAmpMysql.php';
 
 use \InvincibleTechSystems\EaseAmpMysql\EaseAmpMysql;
 use \InvincibleTechSystems\EaseAmpRedis\EaseAmpRedis;
 use \InvincibleTechSystems\EaseAmpMysqlRedis\EaseAmpMysqlRedis;
+use \InvincibleTechSystems\EaseAmpMysqlRedis\CustomAmphpDnsConfigLoader;
 
 $dbHost = "127.0.0.1";
 $dbUsername = "db_username";
@@ -19,6 +20,13 @@ $dbName = "db_name";
 $redisHost = 'tcp://localhost:6379';
 $redisKeyNamespacePrefix = "MyFirstApp";
 $redisKeyExpiryTimeInSeconds = 240;
+
+$customAmphpDnsConfigValues = ["208.67.222.222:53", "208.67.220.220:53","8.8.8.8:53","[2001:4860:4860::8888]:53"];
+
+$CustomAmphpDnsConfigLoader = new CustomAmphpDnsConfigLoader($customAmphpDnsConfigValues, 5000, 3);
+
+\Amp\Dns\resolver(new \Amp\Dns\Rfc1035StubResolver(null, $CustomAmphpDnsConfigLoader));
+
 
 $dbConn = new EaseAmpMysql($dbHost, $dbUsername, $dbPassword, $dbName);
 $redisConn = new EaseAmpRedis($redisHost);
@@ -45,7 +53,7 @@ $queryResult = $mysqlRedisConn->insertSingleRecordMysqlRedis($query, $values_arr
 
 
 $values_array1 = array(':sm_firstname' => 'Raghu',':sm_lastname' => 'D');
-$values_array2 = array(':sm_firstname' => 'Krishna',':sm_lastname' => 'N');
+$values_array2 = array(':sm_firstname' => 'krishna',':sm_lastname' => 'N');
 $values_array3 = array(':sm_firstname' => 'Veera',':sm_lastname' => '');
 
 $total_values_array = array($values_array1, $values_array2, $values_array3);
@@ -77,7 +85,7 @@ $values_array = array(':sm_firstname' => 'RVGV',':sm_lastname' => 'Den',':sm_mem
 
 
 $values_array1 = array(':sm_firstname' => 'Raghu12',':sm_lastname' => '',':sm_memb_id' => 2);
-$values_array2 = array(':sm_firstname' => 'Krishna12',':sm_lastname' => '',':sm_memb_id' => 3);
+$values_array2 = array(':sm_firstname' => 'krishna12',':sm_lastname' => '',':sm_memb_id' => 3);
 $values_array3 = array(':sm_firstname' => 'Veera12',':sm_lastname' => 'p',':sm_memb_id' => 6);
 
 $total_values_array = array($values_array1, $values_array2, $values_array3);
@@ -142,6 +150,24 @@ echo "==========================================================================
 echo "<pre>";
 print_r($queryResult);
 echo "\n****************************************\n";
+	
+$argv = ["microsoft.com","google.com","yahoo.com","pubnub.com","pusher.com"];
 
-
+\Amp\Loop::run(function () use ($argv) {
+    //$hostname = $argv[4] ?? "amphp.org";
+	$hostname = $argv[4];
+	echo "<pre>";
+    try {
+        //pretty_print_records($hostname, yield Dns\resolve($hostname));
+		$ipaddress = yield \Amp\Dns\resolve($hostname);
+		echo "hostname: " . $hostname . "<br>";
+		echo "ipaddress result: " . "<br>";
+		print_r($ipaddress);
+    } catch (\Amp\Dns\DnsException $e) {
+        //pretty_print_error($hostname, $e);
+		echo "error: <br>";
+		print_r($e);
+    }
+});
+ 
 ?>

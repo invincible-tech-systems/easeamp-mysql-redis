@@ -27,6 +27,23 @@ use \InvincibleTechSystems\EaseAmpRedis\EaseAmpRedis;
 use \InvincibleTechSystems\EaseAmpMysqlRedis\EaseAmpMysqlRedis;
 ```
 
+As Amphp/dns is among the dependencies of this library, to prevent recursive DNS Server resolution errors that may occur due reasons like open_basedir restrictions/ no access to /etc/resolv.conf file on the linux server etc..., do include the following lines in your code,
+
+```php
+
+use \InvincibleTechSystems\EaseAmpMysqlRedis\CustomAmphpDnsConfigLoader;
+
+$customAmphpDnsConfigValues = ["208.67.222.222:53", "208.67.220.220:53","8.8.8.8:53","[2001:4860:4860::8888]:53"];
+
+$CustomAmphpDnsConfigLoader = new CustomAmphpDnsConfigLoader($customAmphpDnsConfigValues, 5000, 3);
+
+\Amp\Dns\resolver(new \Amp\Dns\Rfc1035StubResolver(null, $CustomAmphpDnsConfigLoader));
+
+```
+
+Note: Do skip including the above, if incase similar custom DNS Config Loader is loaded from any of the other Amphp/dns dependent libraries like EaseAmyMysql (https://github.com/invincible-tech-systems/easeamp-mysql) or EaseAmpRedis (https://github.com/invincible-tech-systems/easeamp-redis) in the application.
+
+
 In order to connect to the database, you need to initialize the `EaseAmpMysql` class, by passing your database credentials as parameters, in the following order (server hostname, username, password, database name):
 
 

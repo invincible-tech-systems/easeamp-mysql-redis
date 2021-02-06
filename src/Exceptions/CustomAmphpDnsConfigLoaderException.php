@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace InvincibleTechSystems\EaseAmpMysqlRedis\Exceptions;
 
 /*
-* Name: EaseAmpMysqlRedisException
+* Name: CustomAmphpDnsConfigLoaderException
 *
 * Author: Raghuveer Dendukuri
 *
@@ -15,7 +15,7 @@ namespace InvincibleTechSystems\EaseAmpMysqlRedis\Exceptions;
 *
 * @copyright 2020-2021 Invincible Tech Systems
 */
-class EaseAmpMysqlRedisException extends \Exception {
+class CustomAmphpDnsConfigLoaderException extends \Exception {
 	
 }
 ?>

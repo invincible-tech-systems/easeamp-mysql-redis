@@ -7,7 +7,7 @@
 	"require": {
         "invincible-tech-systems/easeampmysql": "^1.0.1",
         "invincible-tech-systems/easeampredis": "^1.0.0"
-    },
+	},
 	"require-dev": {
         "invincible-tech-systems/easeampmysql": "^1.0.1",
         "invincible-tech-systems/easeampredis": "^1.0.0"

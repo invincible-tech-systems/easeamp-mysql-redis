@@ -314,7 +314,7 @@ class EaseAmpMysqlRedis {
 					
 					$this->dbQueryResponse = $this->dbConn->executeQuery($query, $valueArray, $crudOperationType);
 				
-					if ($this->dbQueryResponse > 0) {
+					if (count($this->dbQueryResponse) > 0) {
 						
 						$result["db_query_response"] = $this->dbQueryResponse;
 						

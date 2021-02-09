@@ -5,7 +5,7 @@
     "homepage": "https://www.invincibletechsystems.com/",
     "type": "library",
 	"require": {
-        "invincible-tech-systems/easeampmysql": "^1.0.1",
+        "invincible-tech-systems/easeampmysql": "^1.0.2",
         "invincible-tech-systems/easeampredis": "^1.0.0"
 	},
 	"require-dev": {

@@ -33,8 +33,6 @@ $redisConn = new EaseAmpRedis($redisHost);
 
 $mysqlRedisConn = new EaseAmpMysqlRedis($dbConn, $redisConn);
 
-
-
 //Insert Query (insertWithIntegerAsPrimaryKey)
 $query = "INSERT INTO `site_members`(`sm_firstname`, `sm_lastname`) VALUES (:sm_firstname,:sm_lastname)";
 
@@ -151,7 +149,7 @@ echo "<pre>";
 print_r($queryResult);
 echo "\n****************************************\n";
 	
-$argv = ["microsoft.com","google.com","yahoo.com","pubnub.com","pusher.com"];
+/* $argv = ["microsoft.com","google.com","yahoo.com","pubnub.com","pusher.com"];
 
 \Amp\Loop::run(function () use ($argv) {
     //$hostname = $argv[4] ?? "amphp.org";
@@ -169,5 +167,5 @@ $argv = ["microsoft.com","google.com","yahoo.com","pubnub.com","pusher.com"];
 		print_r($e);
     }
 });
- 
+  */
 ?>

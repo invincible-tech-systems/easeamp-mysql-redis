@@ -5,11 +5,13 @@
     "homepage": "https://www.invincibletechsystems.com/",
     "type": "library",
 	"require": {
+		"php": ">=7.3",
         "invincible-tech-systems/easeampmysql": "^1.0.2",
         "invincible-tech-systems/easeampredis": "^1.0.0"
 	},
 	"require-dev": {
-        "invincible-tech-systems/easeampmysql": "^1.0.1",
+		"php": ">=7.3",
+        "invincible-tech-systems/easeampmysql": "^1.0.2",
         "invincible-tech-systems/easeampredis": "^1.0.0"
     },
     "license": "MIT",
